@@ -7,7 +7,7 @@ import sys
 def get_m3u8_via_embed(video_id):
     try:
         # YouTubeの埋め込み用ページ（ここが一番ボットブロックが緩く、生のURLが含まれている）
-        embed_url = f"https://www.youtube.com/embed/{video_id}"
+        embed_url = f"https://www.youtube.com/embed/ZwuLUTTHnGE"
         
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
