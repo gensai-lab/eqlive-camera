@@ -1,0 +1,33 @@
+name: Update Live Camera URL
+
+on:
+  schedule:
+    # 3時間おきに自動実行 (UTC時間基準のため、12, 15, 18...時など)
+    - cron: '0 */3 * * *'
+  workflow_dispatch: # GitHubの画面から手動で実行するためのボタンをつける設定
+
+jobs:
+  update-url:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # 変更したファイルをリポジトリに保存する権限
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Run extraction script
+      run: python get_live.py
+
+    - name: Commit and Push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add live.json
+        # 変更がある場合のみコミットしてプッシュ
+        git diff --cached --quiet || (git commit -m "Update live.json URL" && git push)
