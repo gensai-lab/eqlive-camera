@@ -2,15 +2,14 @@ name: Update Live Camera URL
 
 on:
   schedule:
-    # 3時間おきに自動実行 (UTC時間基準のため、12, 15, 18...時など)
     - cron: '0 */3 * * *'
-  workflow_dispatch: # GitHubの画面から手動で実行するためのボタンをつける設定
+  workflow_dispatch:
 
 jobs:
   update-url:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # 変更したファイルをリポジトリに保存する権限
+      contents: write
 
     steps:
     - name: Checkout repository
@@ -28,6 +27,15 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
+        
+        # live.json の状態を強制的にインデックスに追加
         git add live.json
-        # 変更がある場合のみコミットしてプッシュ
-        git diff --cached --quiet || (git commit -m "Update live.json URL" && git push)
+        
+        # 変更がある場合のみコミットしてプッシュ（空コミット防止）
+        if ! git diff --cached --quiet; then
+          git commit -m "Update live.json URL by GitHub Action"
+          git push origin HEAD
+          echo "リポジトリへのプッシュが完了しました。"
+        else
+          echo "ファイルに変更がなかったため、プッシュをスキップしました。"
+        fi
