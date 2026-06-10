@@ -23,7 +23,7 @@ def get_m3u8_url(youtube_url):
 
 if __name__ == "__main__":
     # 対象にする YouTube Live のURL
-    YOUTUBE_URL = "https://www.youtube.com/watch?v=動画のID"
+    YOUTUBE_URL = "https://www.youtube.com/watch?v=ZwuLUTTHnGE"
     
     m3u8_url = get_m3u8_url(YOUTUBE_URL)
     
